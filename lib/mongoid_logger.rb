@@ -2,6 +2,9 @@
 
 require "mongoid_logger/version"
 
+require "active_support/buffered_logger"
+require "mongoid"
+
 class MongoidLogger < ActiveSupport::BufferedLogger
 
   class << self
