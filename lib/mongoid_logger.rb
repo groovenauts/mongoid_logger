@@ -80,7 +80,7 @@ class MongoidLogger < ActiveSupport::BufferedLogger
     @session.command(create: name, capped: true, size: @db_configuration["capsize"] || 64.megabyte)
   rescue Exception => e
     if e.message =~ /collection already exists/
-      Rails.logger.warn("Ignore #{name} creation failure. See following message of #{e.class.name}:\n" << e.message)
+      internal_log(:warn, "Ignore #{name} creation failure. See following message of #{e.class.name}:\n" << e.message)
     else
       raise e
     end
@@ -152,6 +152,10 @@ class MongoidLogger < ActiveSupport::BufferedLogger
     return if @ignore_block && @ignore_block.call(doc)
     col = @mongo_collections[ doc[:request_method].downcase.to_sym ]
     col.insert(doc)
+  end
+
+  def internal_log(log_level, msg)
+    $stderr.puts("#{log_level} #{msg}")
   end
 
   # ApplicationController に include して around_filter でログ挿入するためのモジュール
