@@ -128,23 +128,7 @@ class MongoidLogger < ActiveSupport::BufferedLogger
   end
 
   def resolve_config
-    config = {}
-    config_file = Rails.root.join("config", "mongoid.yml")
-    if config_file.file?
-      env = YAML.load(ERB.new(config_file.read).result)[Rails.env]
-      sessions = env["sessions"] if env
-      if sessions
-        if sessions["mongoid_logger"]
-          config = sessions["mongoid_logger"]
-        elsif sessions["default"]
-          config = sessions["default"]
-        end
-      end
-    end
-    return {
-      "log_collection" => "#{Rails.env}_logs",
-      "application_name" => Rails.application.class.to_s.split("::").first,
-    }.update(config)
+    {}
   end
 
   def insert_document(doc)
