@@ -5,20 +5,21 @@ require "mongoid_logger/version"
 require "active_support/buffered_logger"
 require "mongoid"
 
-class MongoidLogger < ActiveSupport::BufferedLogger
-
-  class << self
-    def collection_names
-      @collection_names ||= []
-    end
-  end
-
+module MongoidLogger
 
   LOG_LEVEL_SYM = [:debug, :info, :warn, :error, :fatal, :unknown]
 
   LEVEL_NAMES = LOG_LEVEL_SYM.each_with_object({}) do |name, d|
     value = Logger.const_get(name.to_s.upcase)
     d[value] = name.to_s
+  end
+
+class Base < ActiveSupport::BufferedLogger
+
+  class << self
+    def collection_names
+      @collection_names ||= []
+    end
   end
 
   def initialize(path, options={})
@@ -164,6 +165,8 @@ class MongoidLogger < ActiveSupport::BufferedLogger
       }) { yield }
     end
   end
+
+end
 
   # ログコレクションのためのモジュール
   module LogCollection
