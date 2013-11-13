@@ -112,13 +112,12 @@ class MongoidLogger < ActiveSupport::BufferedLogger
   def configure(options={})
     @db_configuration = {
       "capsize" => 512.megabytes,
-      "log_collection" => "#{Rails.env}_logs",
     }.merge(resolve_config)
     base_name = options[:collection_name] || @db_configuration["log_collection"]
     @mongo_collection_names = (options[:isolated_methods] || []).each_with_object({}){|name,d | d[name] = base_name.sub(/_logs\Z/){ "_#{name}_logs" }  }
     @mongo_collection_names.default = base_name
 
-    @application_name = @db_configuration["application_name"] || Rails.application.class.to_s.split("::").first
+    @application_name = @db_configuration["application_name"]
     @session = Mongoid.default_session.with(safe: true)
     confirm_collection
 
@@ -142,7 +141,10 @@ class MongoidLogger < ActiveSupport::BufferedLogger
         end
       end
     end
-    config
+    return {
+      "log_collection" => "#{Rails.env}_logs",
+      "application_name" => Rails.application.class.to_s.split("::").first,
+    }.update(config)
   end
 
   def insert_document(doc)
