@@ -53,7 +53,7 @@ class MongoidLogger < ActiveSupport::BufferedLogger
     yield
     ed = Time.now
     @record["runtime"] = (ed - st).to_f
-    @record["status"] = controller.response.status
+    @record["status"] = controller ? controller.response.status : 200
   rescue Exception
     if st
       @record["runtime"] = (Time.now - st).to_f
