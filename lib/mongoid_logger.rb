@@ -149,7 +149,7 @@ class MongoidLogger < ActiveSupport::BufferedLogger
     end
 
     def enable_mongoid_logger
-      return yield unless Rails.logger.respond_to?(:mongoize)
+      return yield unless logger.respond_to?(:mongoize)
 
       f_params = case
                  when request.respond_to?(:filtered_parameters)
