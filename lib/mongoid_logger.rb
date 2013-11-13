@@ -41,14 +41,6 @@ class MongoidLogger < ActiveSupport::BufferedLogger
     end
   end
 
-  # override ActiveSupport::BufferedLogger#open_logfile
-  def open_logfile(log)
-    Logger.new(log).tap do |logger|
-      logger.formatter = nil
-    end
-  end
-  private :open_logfile
-
   def mongoize(controller, options={})
     @record = options.merge({
       :messages => [],
