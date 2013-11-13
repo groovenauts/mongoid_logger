@@ -18,8 +18,8 @@ class MongoidLogger < ActiveSupport::BufferedLogger
     d[value] = name.to_s
   end
 
-  def initialize(options={})
-    @path = options[:path] || Rails.root.join("log/#{Rails.env}.log")
+  def initialize(path, options={})
+    @path = path
     @level = options[:level] || DEBUG
     configure(options)
     super(@path, @level)
