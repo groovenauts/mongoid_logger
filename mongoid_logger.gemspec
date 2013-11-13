@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["akm2000@gmail.com"]
   spec.description   = %q{Log into both log file and mongodb log collection}
   spec.summary       = %q{Log into both log file and mongodb log collection}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/groovenauts/mongoid_logger"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
