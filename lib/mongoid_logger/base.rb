@@ -102,7 +102,7 @@ module MongoidLogger
       @mongo_collection_names.default = base_name
 
       @application_name = @db_configuration["application_name"]
-      @session = Mongoid.default_session.with(safe: true)
+      @session = mongoid_session
       confirm_collection
 
       @mongo_collections = @mongo_collection_names.each_with_object({}){|(k, col_name), d| d[k] = @session[col_name] }
@@ -113,6 +113,14 @@ module MongoidLogger
 
     def resolve_config
       {}
+    end
+
+    def mongoid_session
+      if session_name = @db_configuration["session"]
+        Mongoid.session(session_name)
+      else
+        Mongoid.default_session
+      end
     end
 
     def insert_document(doc)
