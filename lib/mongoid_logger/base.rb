@@ -33,7 +33,7 @@ module MongoidLogger
       end
     end
 
-    def mongoize(controller, options={})
+    def enable_mongoid_logging(controller, options={})
       @record = options.merge({
                                 :messages => [],
                                 :request_time => Time.now.getutc,
